@@ -15,6 +15,9 @@ setwd("Z:/Julia Crunden/Results/Plate Reader/Optimising Cys + Met concentrations
 `1572`$YSD <- as.character(`1572`$YSD)
 `1573`$YSD <- as.character(`1573`$YSD)
 
+#Sets a colour-blind friendly palette
+cbPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
+
 #This prints a line plot of df with OD against time and with SD error bars. Colour is set by the YSD number
 plot <- ggplot(data = `465`, aes(x=Time, y=Mean_OD, colour = YSD)) +
   geom_errorbar(data=`465`, mapping=aes(ymin=Mean_OD-`465_SD`, ymax=Mean_OD+`465_SD`)) +
@@ -26,7 +29,12 @@ plot <- ggplot(data = `465`, aes(x=Time, y=Mean_OD, colour = YSD)) +
   #labels the x axis 
   labs(x = "Time (hours)", y = "OD (600nm)") +
   #Sets the x axis scale text and title text to size 12
-  theme(axis.text = element_text(size=12), axis.title = element_text(size=12))
+  theme(axis.text = element_text(size=12), axis.title = element_text(size=12)) +
+  #Sets the visual theme
+  theme_bw() +
+  #sets the colour scale to the colour-blind friendly palette
+  scale_colour_manual(values=cbPalette)
+
 #Adds each new strain in a new layer
 plot2 <- plot + 
   geom_errorbar(data=`466`, mapping=aes(ymin=Mean_OD-`466_SD`, ymax=Mean_OD+`466_SD`)) +
@@ -42,3 +50,4 @@ print(plot4)
 
 #Saves a png file of the plot    
 ggsave("WT and Repressor mean  + SD.png", width = 10, height = 7.5, dpi = 600) 
+
